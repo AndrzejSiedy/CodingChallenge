@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+section {
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+header {
+    background: tomato;
+    /* no flex rules, it will grow */
+}
+
+.main-section {
+    flex: 1;
+    /* 1 and it will fill whole space left if no flex value are set to other children*/
+    background: gold;
+    overflow: auto;
+}
+
+footer {
+    background: lightgreen;
+    min-height: 60px;
+    /* min-height has its purpose :) , unless you meant height*/
+}
+
+body {
+    margin: 0;
+}

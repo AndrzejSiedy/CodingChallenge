@@ -1,0 +1,27 @@
+img {
+    width: 150px;
+    border-radius: 50%;
+}
+
+.detail-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-container > * {
+    width: 100%;
+}
+
+.fab-right-ok {
+    position: fixed;
+    left: auto;
+    right: 75px;
+    bottom: 25px;
+}
+
+.fab-right-cancel {
+    position: fixed;
+    left: auto;
+    right: 15px;
+    bottom: 25px;
+}

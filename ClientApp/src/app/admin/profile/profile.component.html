@@ -1,0 +1,65 @@
+<mat-card>
+
+    <mat-card-header *ngIf="isEdit">
+        <div style="flex: 1">
+            <img src="{{inmate.imgUrl}}">
+        </div>
+        <div style="flex: 1">
+            <mat-card-title>{{inmate.name}}</mat-card-title>
+            <mat-card-subtitle>Date of birth: {{inmate.dob | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="detail-container">
+
+            <mat-form-field *ngIf="isCreate">
+                <input matInput placeholder="Name" [(ngModel)]="inmate.name">
+            </mat-form-field>
+            <mat-form-field *ngIf="isCreate">
+                <input matInput [matDatepicker]="picker2" placeholder="Date of birth" [formControl]="dob">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Nationality" [(ngModel)]="inmate.nationality">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min="1" max="10" placeholder="Cell number" [(ngModel)]="inmate.cellNumber">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Gender" [(ngModel)]="inmate.gender">
+                    <mat-option *ngFor="let sex of gender" [value]="sex">{{sex}}</mat-option>
+                </mat-select>
+
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker1" placeholder="Intake date/time" [formControl]="intakeDateTime">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-select placeholder="Location" [(ngModel)]="inmate.currentLocation">
+                    <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+            <button mat-fab class="fab-right-ok" color="primary" (click)="onBtnSaveClicked()">
+                <mat-icon>
+                    <i class="material-icons">check</i>
+                </mat-icon>
+            </button>
+            <button mat-fab class="fab-right-cancel" (click)="onBtnCancelClicked()">
+                <mat-icon>
+                    <i class="material-icons">close</i>
+                </mat-icon>
+            </button>
+    </mat-card-actions>
+
+</mat-card>

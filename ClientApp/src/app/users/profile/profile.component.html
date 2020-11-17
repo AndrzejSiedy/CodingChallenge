@@ -1,0 +1,54 @@
+<mat-card>
+
+    <!--<mat-card-header>
+        <div style="flex: 1" *ngIf="isEdit">
+            <img height="250" src="{{user.picture.large}}">
+        </div>
+        <div style="flex: 1" *ngIf="isCreate">
+            <img height="250" src="../../../assets/avatar.png">
+        </div>
+        <div style="flex: 1">
+            <mat-card-title>{{user.name.first}}</mat-card-title>
+            <mat-card-subtitle>Date of birth: {{user.dob.date | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+        </div>
+    </mat-card-header>-->
+    <div>
+        user:
+        <pre>{{user | json}}</pre>
+    </div>
+    <mat-card-content>
+        <div class="detail-container">
+
+            <mat-form-field>
+                <input matInput placeholder="First name" [(ngModel)]="user.name.first">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker2" placeholder="Date of birth" [formControl]="dob">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-select placeholder="Nationality" [(ngModel)]="user.nationality">
+                    <mat-option *ngFor="let nat of nationality" [value]="nat.id">{{nat.value}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+           
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-fab class="fab-right-ok" color="primary" (click)="onBtnSaveClicked()">
+            <mat-icon>
+                <i class="material-icons">check</i>
+            </mat-icon>
+        </button>
+        <button mat-fab class="fab-right-cancel" (click)="onBtnCancelClicked()">
+            <mat-icon>
+                <i class="material-icons">close</i>
+            </mat-icon>
+        </button>
+    </mat-card-actions>
+
+</mat-card>
