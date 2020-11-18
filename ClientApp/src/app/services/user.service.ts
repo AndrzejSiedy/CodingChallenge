@@ -25,10 +25,16 @@ export class UserService {
             .get<ServiceResponse<User>>(this.webApiUrl + '/' + id);
     }
 
-    public update(user: User) {
+    public create(user: User): Observable<ServiceResponse<User>> {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' })
         return this.http
-            .put<User>(this.webApiUrl, JSON.stringify(user), { headers: headers });
+            .post<ServiceResponse<User>>(this.webApiUrl, JSON.stringify(user), { headers: headers });
+    }
+
+    public update(user: User): Observable<ServiceResponse<User>> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+        return this.http
+            .put<ServiceResponse<User>>(this.webApiUrl, JSON.stringify(user), { headers: headers });
     }
 
     public delete(id: number): Observable<ServiceResponse<boolean>> {

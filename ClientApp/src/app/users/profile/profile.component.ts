@@ -106,7 +106,9 @@ export class ProfileComponent implements OnInit {
             },
             email: this.getValue('email'),
             gender: this.getValue('gender'),
-            nationality: this.getValue('nationality')
+            nationality: this.getValue('nationality'),
+            // for this project copy original pictures
+            picture: this.user.picture
         } as User
 
         return user;
@@ -140,7 +142,17 @@ export class ProfileComponent implements OnInit {
                 formUser.name.last !== this.user.name.last ||
                 formUser.name.title !== this.user.name.title
             ) {
-                this.userService.update(formUser).subscribe();
+                this.userService.update(formUser).subscribe(resp => {
+                    if (!resp.error) {
+                        const msg = `user ${resp.data.name.first} updated`;
+                        console.warn(msg);
+                        alert(msg)
+                        this.router.navigate(['/user']);
+                    }
+                    else {
+                        alert(resp.error);
+                    }
+                });
             }
         }
         else {
@@ -151,7 +163,13 @@ export class ProfileComponent implements OnInit {
                 name: formUser.name,
                 nationality: formUser.nationality
             } as User;
-            console.warn('user data create', user);
+            this.userService.create(user)
+                .subscribe(resp => {
+                    const msg = `user ${resp.data.name.first} created`;
+                    console.warn(msg);
+                    alert(msg)
+                    this.router.navigate(['/user']);
+                });
         }
     }
 

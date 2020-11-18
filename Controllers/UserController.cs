@@ -25,10 +25,16 @@ namespace CodingChallenge.Controllers
         public ServiceResponse<UserDto> GetUser(int id)
         {
             var user = _userService.GetUsers().FirstOrDefault(u => u.Id == id);
-            return new ServiceResponse<UserDto>
+            var resp = new ServiceResponse<UserDto>
             {
                 Data = user
             };
+
+            if (user == null)
+            {
+                resp.Error = "User not found";
+            }
+            return resp;
         }
 
         [HttpGet]
@@ -42,10 +48,14 @@ namespace CodingChallenge.Controllers
             };
         }
 
-        // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ServiceResponse<UserDto> Post([FromBody] UserDto user)
         {
+            var userDto = _userService.Create(user);
+            return new ServiceResponse<UserDto>()
+            {
+                Data = userDto
+            };
         }
 
         [HttpPut]

@@ -26,6 +26,27 @@ namespace CodingChallenge.Services
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
             return usersDto;
         }
+
+        public UserDto Create(UserDto user)
+        {
+            var users = _GetUsers().ToList();
+            var u = _mapper.Map<User>(user);
+            u.Password = Guid.NewGuid().ToString();
+            var tempPictureUrl = "../../../assets/no-see.png";
+            u.Picture = new Picture()
+            {
+                Large = tempPictureUrl,
+                Medium = tempPictureUrl,
+                Thumbnail = tempPictureUrl
+            };
+            var maxId = users.Select(u => u.Id).Max();
+            u.Id = maxId + 1;
+
+            users.Add(u);
+            _SetUserCache(users);
+            return user;
+        }
+
         public UserDto Update(UserDto user)
         {
             var users = _GetUsers().ToList();
@@ -36,7 +57,6 @@ namespace CodingChallenge.Services
                 users[user.Id] = userToBeUpdated;
                 _SetUserCache(users);
             }
-            var usersss = _GetUsers();
             return user;
         }
 

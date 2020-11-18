@@ -57,7 +57,7 @@ namespace CodingChallenge
 
             //========================================================================
             // register custom middleware potencially could do some checks/tests etc.
-            app.UseCustomRequestMiddleware();
+            //app.UseCustomRequestMiddleware();
             //========================================================================
 
 
