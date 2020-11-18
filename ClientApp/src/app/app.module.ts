@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { ProfileComponent } from './admin/profile/profile.component';
 import { AllMaterialModules } from './material-module';
 import { ConfigService } from './services/config.service';
 import { SharedModule } from './shared/shared.module';
+import { AuthHttpInterceptor } from './services/auth-httpInterceptor.service';
 
 
 @NgModule({
@@ -35,7 +36,11 @@ import { SharedModule } from './shared/shared.module';
         AllMaterialModules,
         SharedModule
     ],
-    providers: [DataService, ConfigService],
+    providers: [
+        DataService,
+        ConfigService,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { first } from 'rxjs/operators';
+import { catchError, first } from 'rxjs/operators';
 import { Gender, Lov, Nationality, ServiceResponse, Title, User } from '../../models/models';
 import { ConfigService } from '../../services/config.service';
 import { UserService } from '../../services/user.service';
