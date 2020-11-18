@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User, ServiceResponse } from '../models/models';
-import { of, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -23,6 +23,12 @@ export class UserService {
     public getUser(id: number): Observable<ServiceResponse<User>> {
         return this.http
             .get<ServiceResponse<User>>(this.webApiUrl + '/' + id);
+    }
+
+    public update(user: User) {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' })
+        return this.http
+            .put<User>(this.webApiUrl, JSON.stringify(user), { headers: headers });
     }
 
     public delete(id: number): Observable<ServiceResponse<boolean>> {

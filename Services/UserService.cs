@@ -26,6 +26,19 @@ namespace CodingChallenge.Services
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
             return usersDto;
         }
+        public UserDto Update(UserDto user)
+        {
+            var users = _GetUsers().ToList();
+            var userToBeUpdated = users.FirstOrDefault(u => u.Id == user.Id);
+            if (userToBeUpdated != null)
+            {
+                userToBeUpdated = _mapper.Map<User>(user);
+                users[user.Id] = userToBeUpdated;
+                _SetUserCache(users);
+            }
+            var usersss = _GetUsers();
+            return user;
+        }
 
         public bool Delete(int id)
         {

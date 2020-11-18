@@ -48,10 +48,14 @@ namespace CodingChallenge.Controllers
         {
         }
 
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public ServiceResponse<UserDto> Put([FromBody] UserDto user)
         {
+            var userDto = _userService.Update(user);
+            return new ServiceResponse<UserDto>()
+            {
+                Data = userDto
+            };
         }
 
         // DELETE api/<UserController>/5
