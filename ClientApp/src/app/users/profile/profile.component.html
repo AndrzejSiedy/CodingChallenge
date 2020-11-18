@@ -1,24 +1,13 @@
 <mat-card>
 
-    <!--<mat-card-header>
-        <div style="flex: 1" *ngIf="isEdit">
-            <img height="250" src="{{user.picture.large}}">
-        </div>
-        <div style="flex: 1" *ngIf="isCreate">
-            <img height="250" src="../../../assets/avatar.png">
-        </div>
-        <div style="flex: 1">
-            <mat-card-title>{{user.name.first}}</mat-card-title>
-            <mat-card-subtitle>Date of birth: {{user.dob.date | date:'dd/MM/yyyy'}}</mat-card-subtitle>
-        </div>
-    </mat-card-header>-->
+    
     <!--<div>
         user:
         <pre>{{user | json}}</pre>
     </div>-->
-    <form [formGroup]="userForm" autocomplete="off" novalidate  fxLayout="column wrap"
-            fxLayoutAlign="center center" fxLayoutGap="10px">
-        <mat-card-content>
+    <form [formGroup]="userForm" autocomplete="off" novalidate fxLayout="column wrap"
+          fxLayoutAlign="center center" fxLayoutGap="10px">
+        <mat-card-header>
             <div>
                 <div style="flex: 1" *ngIf="isEdit">
                     <img height="250" src="{{user.picture.large}}">
@@ -31,11 +20,15 @@
                     <mat-card-subtitle>Date of birth: {{user.dob.date | date:'dd/MM/yyyy'}}</mat-card-subtitle>
                 </div>
             </div>
+    </mat-card-header>
+        <mat-card-content>
+            
             <div class="detail-container">
                 <mat-form-field>
                     <mat-select placeholder="Title" formControlName="title" id="title">
                         <mat-option *ngFor="let t of title" [value]="t.id">{{t.value}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="hasError('title', 'required')">Title is required</mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
@@ -53,8 +46,9 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput [matDatepicker]="dobPicker" placeholder="Choose a date of birth" formControlName="dob" id="dob"
+                    <input matInput [matDatepicker]="dobPicker" placeholder="Choose a date of birth" formControlName="dob" id="dob" [min]="minDate" [max]="maxDate"
                            readonly (click)="dobPicker.open()">
+                    <mat-error *ngIf="hasError('dob', 'required')">Date required</mat-error>
                     <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dobPicker></mat-datepicker>
                 </mat-form-field>
@@ -63,11 +57,13 @@
                     <mat-select placeholder="Gender" formControlName="gender" id="gender">
                         <mat-option *ngFor="let g of gender" [value]="g.id">{{g.value}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="hasError('gender', 'required')">Gender required</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-select placeholder="Nationality" formControlName="nationality" id="nationality">
                         <mat-option *ngFor="let n of nationality" [value]="n.id">{{n.value}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="hasError('nationality', 'required')">Nationality required</mat-error>
                 </mat-form-field>
 
                 <mat-form-field>

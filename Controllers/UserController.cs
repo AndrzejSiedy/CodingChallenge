@@ -24,17 +24,20 @@ namespace CodingChallenge.Controllers
         [HttpGet("{id}")]
         public ServiceResponse<UserDto> GetUser(int id)
         {
-            var user = _userService.GetUsers().FirstOrDefault(u => u.Id == id);
-            var resp = new ServiceResponse<UserDto>
+            var user = _userService.GetUser(id);
+            if(user != null)
             {
-                Data = user
-            };
-
-            if (user == null)
-            {
-                resp.Error = "User not found";
+                return new ServiceResponse<UserDto>
+                {
+                    Data = user
+                };
             }
-            return resp;
+
+            // this should not be error but NotFound 
+            return new ServiceResponse<UserDto>
+            {
+                Error = "User not found"
+            };
         }
 
         [HttpGet]

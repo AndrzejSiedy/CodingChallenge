@@ -18,8 +18,8 @@ namespace CodingChallenge.Utils
             for (int i = 0; i < data.Count; i++)
             {
                 var u = data[i];
-                u.Id = i;
-                u.Password = "test";
+                u.Id = i + 1;
+                u.Password = Guid.NewGuid().ToString();
             }
             return data;
         }

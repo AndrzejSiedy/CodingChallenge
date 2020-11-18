@@ -27,6 +27,16 @@ namespace CodingChallenge.Services
             return usersDto;
         }
 
+        public UserDto GetUser(int id)
+        {
+            var users = _GetUsers();
+            var u = users.FirstOrDefault(u => u.Id == id);
+            if(u != null) {
+                return _mapper.Map<UserDto>(u);
+            }
+            return null;
+        }
+
         public UserDto Create(UserDto user)
         {
             var users = _GetUsers().ToList();

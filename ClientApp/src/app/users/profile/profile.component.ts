@@ -3,9 +3,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { first } from 'rxjs/operators';
-import { Gender, Lov, Nationality, Title, User } from '../../models/models';
+import { Gender, Lov, Nationality, ServiceResponse, Title, User } from '../../models/models';
 import { ConfigService } from '../../services/config.service';
 import { UserService } from '../../services/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuccessDialogComponent } from '../../shared/dialogs/success-dialog/success-dialog.component';
+import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
 
 @Component({
     selector: 'app-profile',
@@ -26,8 +29,12 @@ export class ProfileComponent implements OnInit {
 
     public userForm: FormGroup;
 
+    public minDate = new Date('01-01-1900');
+    public maxDate = new Date('01-01-2019');
+    private dialogConfig;
+
     constructor(private router: Router, private route: ActivatedRoute, private location: Location,
-        private userService: UserService, private configService: ConfigService) {
+        private userService: UserService, private configService: ConfigService, private dialog: MatDialog) {
 
         const config = this.configService.viewConfig;
         this.gender = config.gender;
@@ -44,9 +51,9 @@ export class ProfileComponent implements OnInit {
             title: new FormControl(''),
             fname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]),
             lname: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]),
-            dob: new FormControl(new Date()),
-            gender: new FormControl(''),
-            nationality: new FormControl(''),
+            dob: new FormControl('', [Validators.required]),
+            gender: new FormControl('', [Validators.required]),
+            nationality: new FormControl('', [Validators.required]),
             email: new FormControl('', [Validators.required, Validators.email])
         });
 
@@ -61,10 +68,15 @@ export class ProfileComponent implements OnInit {
             .pipe(first())
             .subscribe(resp => {
                 if (this.isEdit) {
-                    this.user = resp.editUser as User;
-                    this.backupUser = { ...this.user }
-
-                    this.setForm(this.user);
+                    const serviceResp = resp.serviceResponse as ServiceResponse<User>;
+                    if (serviceResp.data && !serviceResp.error) {
+                        this.user = serviceResp.data;
+                        this.backupUser = { ...this.user }
+                        this.setForm(this.user);
+                    }
+                    else {
+                        this.showErrorDialog(serviceResp.error);
+                    }
                 }
             });
     }
@@ -115,6 +127,13 @@ export class ProfileComponent implements OnInit {
     }
 
     private resetComponent() {
+        this.dialogConfig = {
+            height: '400px',
+            width: '600px',
+            disableClose: true,
+            data: {}
+        }
+
         const avatar = '../../../assets/avatar.png';
         this.user = {
             id: 0,
@@ -146,11 +165,11 @@ export class ProfileComponent implements OnInit {
                     if (!resp.error) {
                         const msg = `user ${resp.data.name.first} updated`;
                         console.warn(msg);
-                        alert(msg)
-                        this.router.navigate(['/user']);
+                        this.showSuccessDialog();
                     }
                     else {
                         alert(resp.error);
+                        this.showErrorDialog(resp.error);
                     }
                 });
             }
@@ -167,8 +186,7 @@ export class ProfileComponent implements OnInit {
                 .subscribe(resp => {
                     const msg = `user ${resp.data.name.first} created`;
                     console.warn(msg);
-                    alert(msg)
-                    this.router.navigate(['/user']);
+                    this.showSuccessDialog();
                 });
         }
     }
@@ -180,5 +198,24 @@ export class ProfileComponent implements OnInit {
         });
         
         this.router.navigate(['/user']);
+    }
+
+    showSuccessDialog = () => {
+        const dialogRef = this.dialog.open(SuccessDialogComponent, this.dialogConfig);
+        //we are subscribing on the [mat-dialog-close] attribute as soon as we click on the dialog button
+        dialogRef.afterClosed()
+            .subscribe(result => {
+                this.router.navigate(['/user']);
+            });
+    }
+
+    showErrorDialog = (errorMsg) => {
+        const dialogCfg = { ... this.dialogConfig };
+        dialogCfg.data = { errorMessage: errorMsg };
+        const dialogRef = this.dialog.open(ErrorDialogComponent, dialogCfg);
+        dialogRef.afterClosed()
+            .subscribe(result => {
+                this.router.navigate(['/user']);
+            });
     }
 }

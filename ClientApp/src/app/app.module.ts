@@ -14,6 +14,7 @@ import { ListComponent } from './admin/list/list.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { AllMaterialModules } from './material-module';
 import { ConfigService } from './services/config.service';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ConfigService } from './services/config.service';
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        AllMaterialModules
+        AllMaterialModules,
+        SharedModule
     ],
     providers: [DataService, ConfigService],
     bootstrap: [AppComponent]
