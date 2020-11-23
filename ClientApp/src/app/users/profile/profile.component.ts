@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessDialogComponent } from '../../shared/dialogs/success-dialog/success-dialog.component';
 import { ErrorDialogComponent } from '../../shared/dialogs/error-dialog/error-dialog.component';
+import { ErrorHandlerService } from '../../shared/error-handler.service';
 
 @Component({
     selector: 'app-profile',
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit {
     private dialogConfig;
 
     constructor(private router: Router, private route: ActivatedRoute, private location: Location,
-        private userService: UserService, private configService: ConfigService, private dialog: MatDialog) {
+        private userService: UserService, private configService: ConfigService, private dialog: MatDialog,
+        private errorService: ErrorHandlerService) {
 
         const config = this.configService.viewConfig;
         this.gender = config.gender;
@@ -60,15 +62,17 @@ export class ProfileComponent implements OnInit {
         this.route.url
             .pipe(first())
             .subscribe(params => {
-            this.isCreate = params.filter(urlPath => urlPath.path.toLowerCase() === 'create').length > 0;
-            this.isEdit = !this.isCreate;
-        });
+                this.isCreate = params.filter(urlPath => urlPath.path.toLowerCase() === 'create').length > 0;
+                this.isEdit = !this.isCreate;
+            });
 
-        this.route.data
+
+        const userId = this.route.snapshot.params['id'];
+        this.userService.getUser(userId)
             .pipe(first())
             .subscribe(resp => {
                 if (this.isEdit) {
-                    const serviceResp = resp.serviceResponse as ServiceResponse<User>;
+                    const serviceResp = resp as ServiceResponse<User>;
                     if (serviceResp.data && !serviceResp.error) {
                         this.user = serviceResp.data;
                         this.backupUser = { ...this.user }
@@ -77,8 +81,29 @@ export class ProfileComponent implements OnInit {
                     else {
                         this.showErrorDialog(serviceResp.error);
                     }
+
                 }
-            });
+            },
+                (error => {
+                    this.errorService.dialogConfig = { ...this.dialogConfig };
+                    this.errorService.handleError(error);
+                }))
+
+        //this.route.data
+        //    .pipe(first())
+        //    .subscribe(resp => {
+        //        if (this.isEdit) {
+        //            const serviceResp = resp.serviceResponse as ServiceResponse<User>;
+        //            if (serviceResp.data && !serviceResp.error) {
+        //                this.user = serviceResp.data;
+        //                this.backupUser = { ...this.user }
+        //                this.setForm(this.user);
+        //            }
+        //            else {
+        //                this.showErrorDialog(serviceResp.error);
+        //            }
+        //        }
+        //    });
     }
 
     private setForm(user: User) {
@@ -171,7 +196,11 @@ export class ProfileComponent implements OnInit {
                         alert(resp.error);
                         this.showErrorDialog(resp.error);
                     }
-                });
+                },
+                    (error => {
+                        this.errorService.dialogConfig = { ...this.dialogConfig };
+                        this.errorService.handleError(error);
+                    }));
             }
         }
         else {
@@ -187,7 +216,10 @@ export class ProfileComponent implements OnInit {
                     const msg = `user ${resp.data.name.first} created`;
                     console.warn(msg);
                     this.showSuccessDialog();
-                });
+                }, (error => {
+                    this.errorService.dialogConfig = { ...this.dialogConfig };
+                    this.errorService.handleError(error);
+                }));
         }
     }
 
@@ -196,7 +228,7 @@ export class ProfileComponent implements OnInit {
         Object.keys(this.backupUser).forEach((key) => {
             this.user[key] = this.backupUser[key]
         });
-        
+
         this.router.navigate(['/user']);
     }
 

@@ -13,9 +13,9 @@ const routes: Routes = [
     {
         path: 'edit/:id',
         component: ProfileComponent,
-        resolve: {
-            serviceResponse: UserProfileResolver
-        }
+        //resolve: {
+        //    serviceResponse: UserProfileResolver
+        //}
     },
 ];
 
