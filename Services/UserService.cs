@@ -63,8 +63,16 @@ namespace CodingChallenge.Services
             var userToBeUpdated = users.FirstOrDefault(u => u.Id == user.Id);
             if (userToBeUpdated != null)
             {
-                userToBeUpdated = _mapper.Map<User>(user);
-                users[user.Id] = userToBeUpdated;
+                var mappedUser = _mapper.Map<User>(user);
+                userToBeUpdated.Dob = mappedUser.Dob;
+                userToBeUpdated.Email = mappedUser.Email;
+                userToBeUpdated.Gender = mappedUser.Gender;
+                userToBeUpdated.Name = mappedUser.Name;
+                userToBeUpdated.Nationality = mappedUser.Nationality;
+                userToBeUpdated.Password = mappedUser.Password;
+                userToBeUpdated.Picture = mappedUser.Picture;
+
+                //users[user.Id] = userToBeUpdated;
                 _SetUserCache(users);
             }
             return user;
