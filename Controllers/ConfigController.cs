@@ -22,13 +22,14 @@ namespace CodingChallenge.Controllers
         }
 
         [HttpGet]
-        public ServiceResponse<ViewConfig> GetConfig()
+        public IActionResult GetConfig()
         {
             var config = _configService.GetConfig();
-            return new ServiceResponse<ViewConfig>
+
+            return Ok(new ServiceResponse<ViewConfig>
             {
                 Data = config
-            };
+            });
         }
     }
 }

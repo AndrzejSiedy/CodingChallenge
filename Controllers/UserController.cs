@@ -22,64 +22,63 @@ namespace CodingChallenge.Controllers
         }
 
         [HttpGet("{id}")]
-        public ServiceResponse<UserDto> GetUser(int id)
+        public IActionResult GetUser(int id)
         {
             var user = _userService.GetUser(id);
             if(user != null)
             {
-                return new ServiceResponse<UserDto>
+                return Ok(new ServiceResponse<UserDto>
                 {
                     Data = user
-                };
+                });
             }
 
-            // this should not be error but NotFound 
-            return new ServiceResponse<UserDto>
+            return NotFound(new ServiceResponse<UserDto>
             {
                 Error = "User not found"
-            };
+            });
         }
 
         [HttpGet]
-        public ServiceResponse<IEnumerable<UserDto>> GetUsers()
+        public IActionResult GetUsers()
         {
             var users = _userService.GetUsers();
-            return new ServiceResponse<IEnumerable<UserDto>>
+            return Ok(new ServiceResponse<IEnumerable<UserDto>>
             {
                 Data = users,
                 Total = users.Count()
-            };
+            });
         }
 
         [HttpPost]
-        public ServiceResponse<UserDto> Post([FromBody] UserDto user)
+        public IActionResult Post([FromBody] UserDto user)
         {
             var userDto = _userService.Create(user);
-            return new ServiceResponse<UserDto>()
+            return Ok(new ServiceResponse<UserDto>()
             {
                 Data = userDto
-            };
+            });
         }
 
         [HttpPut]
-        public ServiceResponse<UserDto> Put([FromBody] UserDto user)
+        public IActionResult Put([FromBody] UserDto user)
         {
             var userDto = _userService.Update(user);
-            return new ServiceResponse<UserDto>()
+            return Ok(new ServiceResponse<UserDto>()
             {
                 Data = userDto
-            };
+            });
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public ServiceResponse<bool> Delete(int id)
+        public IActionResult Delete(int id)
         {
             var success = _userService.Delete(id);
-            return new ServiceResponse<bool>()
+            return Ok(new ServiceResponse<bool>()
             {
                 Data = success
-            };
+            });
         }
     }
 }
