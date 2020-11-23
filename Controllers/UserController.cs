@@ -25,7 +25,9 @@ namespace CodingChallenge.Controllers
         public IActionResult GetUser(int id)
         {
             var user = _userService.GetUser(id);
-            if(user != null)
+            var encEmail = Utils.EncryptionHelper.Encrypt(user.Email);
+            user.Email = encEmail;
+            if (user != null)
             {
                 return Ok(new ServiceResponse<UserDto>
                 {
@@ -53,6 +55,10 @@ namespace CodingChallenge.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserDto user)
         {
+
+            var email = user.Email;
+            var decEmail = Utils.EncryptionHelper.Decrypt(email);
+
             var userDto = _userService.Create(user);
             return Ok(new ServiceResponse<UserDto>()
             {
@@ -63,6 +69,10 @@ namespace CodingChallenge.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] UserDto user)
         {
+            var email = user.Email;
+            var decEmail = Utils.EncryptionHelper.Decrypt(email);
+            user.Email = decEmail;
+
             var userDto = _userService.Update(user);
             return Ok(new ServiceResponse<UserDto>()
             {

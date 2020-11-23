@@ -16,6 +16,7 @@ import { AllMaterialModules } from './material-module';
 import { ConfigService } from './services/config.service';
 import { SharedModule } from './shared/shared.module';
 import { AuthHttpInterceptor } from './services/auth-httpInterceptor.service';
+import { EncrDecrService } from './services/encr-decr.service';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { AuthHttpInterceptor } from './services/auth-httpInterceptor.service';
     providers: [
         DataService,
         ConfigService,
+        EncrDecrService,
         { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]

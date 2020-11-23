@@ -1,8 +1,6 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, first, map } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ServiceResponse, User } from '../models/models';
 import { UserService } from './user.service';
 
@@ -17,8 +15,6 @@ export class UserProfileResolver implements Resolve<ServiceResponse<User>> {
 
         return this.userService
             .getUser(userId);
-            //.pipe(first());
-            //.pipe(map(resp => { return resp.data }));
     }
 
 }

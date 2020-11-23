@@ -35,6 +35,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\services\auth-httpInterceptor.service.ts" />
     <None Remove="ClientApp\src\app\services\config.service.ts" />
+    <None Remove="ClientApp\src\app\services\encr-decr.service.ts" />
     <None Remove="ClientApp\src\app\services\user-profile.resolver.ts" />
     <None Remove="ClientApp\src\app\services\user.service.ts" />
   </ItemGroup>
@@ -42,6 +43,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\services\auth-httpInterceptor.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\config.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\encr-decr.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\user-profile.resolver.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\user.service.ts" />
   </ItemGroup>
