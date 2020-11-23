@@ -15,7 +15,7 @@ import { UserService } from '../services/user.service';
     declarations: [
         UsersComponent,
         ProfileComponent,
-        ListComponent
+        ListComponent,
     ],
     imports: [
         CommonModule,

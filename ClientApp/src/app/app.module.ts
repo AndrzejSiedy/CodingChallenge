@@ -17,6 +17,8 @@ import { ConfigService } from './services/config.service';
 import { SharedModule } from './shared/shared.module';
 import { AuthHttpInterceptor } from './services/auth-httpInterceptor.service';
 import { EncrDecrService } from './services/encr-decr.service';
+import { NotFoundComponent } from './error-pages/not-found/not-found.component';
+import { ServerErrorComponent } from './error-pages/server-error/server-error.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { EncrDecrService } from './services/encr-decr.service';
         HeaderComponent,
         HomeComponent,
         ListComponent,
-        ProfileComponent
+        ProfileComponent,
+        NotFoundComponent,
+        ServerErrorComponent
     ],
     imports: [
         HttpClientModule,
@@ -35,7 +39,7 @@ import { EncrDecrService } from './services/encr-decr.service';
         AppRoutingModule,
         BrowserAnimationsModule,
         AllMaterialModules,
-        SharedModule
+        SharedModule,
     ],
     providers: [
         DataService,
